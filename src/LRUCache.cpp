@@ -44,3 +44,39 @@ void LRUCache::removeNode(Node* node) {
     node->prev->next = node->next;
     node->next->prev = node->prev;
 }
+
+void LRUCache::moveToFront(Node* node) {
+    removeNode(node);
+    addToFront(node);
+}
+
+int LRUCache::get(int key) {
+    auto it = cache.find(key);
+    if(it == cache.end()) return -1;
+    Node* node = it->second;
+    moveToFront(node);
+    return node->val;
+}
+
+void LRUCache::put(int key, int value) {
+    auto it = cache.find(key); // finding node to corresponding key
+    if(it == cache.end()) {
+        // adding a new node, checking capacity constraints
+        if((int)cache.size() == capacity) {
+            // we gotta remove LRU Cache
+            Node* LRUNode = tail->next;
+            cache.erase(LRUNode->key);
+            removeNode(LRUNode);
+            delete LRUNode;
+        }
+        Node* node = new Node(key, value);
+        cache[key] = node;
+        addToFront(node);
+    }
+    else {
+        // updating current node's val
+        Node* node = it->second;
+        moveToFront(node);
+        node->val = value;
+    }
+}
