@@ -29,4 +29,5 @@ struct CacheStats {
             "Hit Ratio:" << hitRatio()*100.0 << "%\n" <<
             "Miss Ratio: " << missRatio()*100.0 << "%\n";
     }
+    
 };
