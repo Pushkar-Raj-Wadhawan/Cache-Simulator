@@ -3,7 +3,6 @@
 #include "CacheStats.h"
 using namespace std;
 
-CacheStats stats;
 
 class FIFOCache {
 private:
