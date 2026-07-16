@@ -3,8 +3,6 @@
 #include "CacheStats.h"
 using namespace std;
 
-CacheStats stats;
-
 class LFUCache {
     int capacity;
     int minFreq;
@@ -15,6 +13,7 @@ class LFUCache {
     void touch(int key); // increment frequency, and handling list migration + minFreq update
 
 public:
+    CacheStats stats;
     LFUCache(int capacity);
     int get(int key);
     void put(int key, int value);

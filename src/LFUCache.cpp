@@ -1,7 +1,4 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#include "../include/LFUCache.h"
+#include "..\include\LFUCache.h"
 
 LFUCache::LFUCache(int capacity) {
     this->capacity = capacity;

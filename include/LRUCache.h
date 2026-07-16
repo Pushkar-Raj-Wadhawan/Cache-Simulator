@@ -24,6 +24,7 @@ private:
     void moveToFront(Node* node);
 
 public:
+    CacheStats stats;
     LRUCache(int capacity);
     int get(int key);
     void put(int key, int value);
