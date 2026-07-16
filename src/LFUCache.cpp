@@ -1,23 +1,12 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class LFUCache {
-    int capacity;
-    int minFreq;
-    unordered_map<int, pair<int, int>> cache; // key -> value, freq
-    unordered_map<int, list<int>> freqList; // front->MRU, back->LRU
-    unordered_map<int, list<int>::iterator> pos;
+#include "../include/LFUCache.h"
 
-    void touch(int key); // increment frequency, and handling list migration + minFreq update
-
-public:
-    LFUCache(int capacity) {
-        this->capacity = capacity;
-        minFreq = 0;
-    }
-    int get(int key);
-    void put(int key, int value);
-};
+LFUCache::LFUCache(int capacity) {
+    this->capacity = capacity;
+    minFreq = 0;
+}
 
 void LFUCache::touch(int key) {
     auto it = cache.find(key);
@@ -32,7 +21,8 @@ void LFUCache::touch(int key) {
 
 int LFUCache::get(int key) {
     auto it = cache.find(key);
-    if(it == cache.end()) return -1;
+    if(it == cache.end()) {stats.recordMiss(); return -1;}
+    stats.recordHit();
     touch(key);
     return it->second.first;
 }
@@ -42,6 +32,7 @@ void LFUCache::put(int key, int value) {
     if(it == cache.end()) {
         // we need to make this after ensuring space for it
         if(cache.size() == capacity) {
+            stats.recordEviction();
             int LFUVal = freqList[minFreq].back();
             freqList[minFreq].pop_back();
             cache.erase(LFUVal);
